@@ -12,7 +12,7 @@ Pewlett Hackard is preparing for it's upcoming "silver tsumnami" where many baby
 
 ![retiring_titles](https://github.com/Meghajain84/Pewlett-Hackard-Analysis/blob/main/retiring_titles.PNG)
 
-(2) The table "retiring_titles" (as seen in above image) also conveys that retirement-eligible employees in senior positions are huge in number as compared to non-senior positions. People with most experience are in senior roles. 
+(3) The table "retiring_titles" (as seen in above image) also conveys that retirement-eligible employees in senior positions are huge in number as compared to non-senior positions. In other words about 70% of employees that are eligible for retirement are in senior positions. The company can decide how they want to allocate this percentage in hiring employees between new hires, promoting in-house employees to senior positions, or to get rid of certain positions as automations have reduced manual labor.
 
 (4) The below query with highlighted conditions help in identifying employees that can mentor new hires. 1965 born resources fit this bill as they have atleast 10 years of service left to mentor the people before they become eligible for retirement.
 
@@ -28,7 +28,31 @@ Pewlett Hackard is preparing for it's upcoming "silver tsumnami" where many baby
 
 ### Provide two additional queries or tables that may provide more insight into the upcoming "silver tsunami"
 
-(1)
+(1) 
 
-(2)
+
+(2)	Table with count of total employees and max salary per department and various titles under those departments
+
+Purpose: 
+This gives count of total current employees and max salary per department and title under those departments. This information shows the current size of department and big picture in regards to titles available in department. The company can determine the new composition before posting new openings using this as base. This data can be used when looking at count of potential retiring employees in comparison to overall current state of department.We can also use same query to find employees retiring by adding additional clause of retirement criteria. 
+
+Query:
+
+    SELECT DISTINCT de.dept_no, d.dept_name, emp_title.title, count(de.emp_no), max(s.salary)
+    INTO Dept_Title_MaxSal
+    FROM 
+	    (select * from dept_emp 
+	    where to_date = '9999-01-01') de
+    INNER JOIN (select distinct on (e.emp_no) e.emp_no, t.title
+			from employees e
+		    inner join titles as t
+			on (e.emp_no = t.emp_no)
+		   	order by e.emp_no, t.from_date desc) emp_title
+    ON (de.emp_no = emp_title.emp_no)
+    INNER JOIN salaries as s
+    ON (de.emp_no = s.emp_no)
+    INNER JOIN departments d 
+    ON (de.dept_no = d.dept_no)
+    group by 
+	    de.dept_no, d.dept_name, emp_title.title ;
 

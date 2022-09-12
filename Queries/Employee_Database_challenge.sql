@@ -92,3 +92,42 @@ on (e.emp_no = t.emp_no)
 WHERE (de.to_date = '9999-01-01')
 and (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 order by e.emp_no, t.from_date desc;
+
+/*
+Deliverable 3 - Analysis
+*************************
+Provide two additional queries or tables that may provide more insight into the upcoming "silver tsunami"
+*/
+
+/*
+(1)	Table depicting complete picture of retirement eligible employees along with their latest title, latest department and latest salary.
+Also, this table can be used as a report having all the key information
+*/
+
+select emp_no, count(salary)  from salaries group by emp_no having count(salary) >1 ;
+
+/*
+(2)	Table with departments and corresponding titles and corresponding maximum salaries
+*/
+SELECT DISTINCT de.dept_no, d.dept_name, emp_title.title, count(de.emp_no), max(s.salary)
+INTO Dept_Title_MaxSal
+FROM 
+	(select * from dept_emp 
+	where to_date = '9999-01-01') de
+INNER JOIN (select distinct on (e.emp_no) e.emp_no, t.title
+			from employees e
+		    inner join titles as t
+			on (e.emp_no = t.emp_no)
+		   	order by e.emp_no, t.from_date desc) emp_title
+ON (de.emp_no = emp_title.emp_no)
+INNER JOIN salaries as s
+ON (de.emp_no = s.emp_no)
+INNER JOIN departments d 
+ON (de.dept_no = d.dept_no)
+group by 
+	de.dept_no, d.dept_name, emp_title.title ;
+
+--select * from Dept_Title_MaxSal;
+	
+
+	
