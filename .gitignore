@@ -1,3 +1,14 @@
+# Additional files
+Correct_ERD.PNG
+QuickDBD.txt
+EmployeeDB.png
+Queries/Employee_Challenge_starter_code.sql
+Queries/Queries.sql
+Queries/schema.sql
+
+# Additional folder
+Data/not_to_push
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
