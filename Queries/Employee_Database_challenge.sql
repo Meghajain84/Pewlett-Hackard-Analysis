@@ -72,7 +72,7 @@ Deliverable 2: The Employees Eligible for the Mentorship Program
 6) Join the Employees and the Department Employee tables on the primary key.
 7) Join the Employees and the Titles tables on the primary key.
 8) Filter the data on the to_date column to all the current employees, then filter the data on the birth_date columns to get all the employees whose birth dates are between January 1, 1965 and December 31, 1965.
-9)Order the table by the employee number.
+9) Order the table by the employee number.
 10) Export the Mentorship Eligibility table as mentorship_eligibilty.csv and save it to your Data folder in the Pewlett-Hackard-Analysis folder.
 11) Before you export your table, confirm that it looks like given image
 */
@@ -100,14 +100,20 @@ Provide two additional queries or tables that may provide more insight into the 
 */
 
 /*
-(1)	Table depicting complete picture of retirement eligible employees along with their latest title, latest department and latest salary.
-Also, this table can be used as a report having all the key information
+(1)	Table of employees eligible for retirement with their days of service in the company
 */
-
-select emp_no, count(salary)  from salaries group by emp_no having count(salary) >1 ;
+SELECT E.EMP_NO,
+	E.FIRST_NAME,
+	E.LAST_NAME,
+	E.BIRTH_DATE,
+	E.GENDER,
+	(CURRENT_DATE - E.HIRE_DATE) AS DAYS_OF_SERVICE INTO EMPLOYEE_SERVICE
+FROM EMPLOYEES E
+WHERE (E.BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+ORDER BY E.EMP_NO;
 
 /*
-(2)	Table with departments and corresponding titles and corresponding maximum salaries
+(2)	Table with count of total employees and max salary per department and various titles under those departments
 */
 SELECT DISTINCT de.dept_no, d.dept_name, emp_title.title, count(de.emp_no), max(s.salary)
 INTO Dept_Title_MaxSal

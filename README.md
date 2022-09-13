@@ -28,7 +28,23 @@ Pewlett Hackard is preparing for it's upcoming "silver tsumnami" where many baby
 
 ### Provide two additional queries or tables that may provide more insight into the upcoming "silver tsunami"
 
-(1) 
+(1) Table of employees eligible for retirement with their days of service in the company
+
+Purpose:
+That can determine the retirement benefits or severence package for employees
+
+
+Query:
+
+    SELECT E.EMP_NO,
+        E.FIRST_NAME,
+        E.LAST_NAME,
+        E.BIRTH_DATE,
+        E.GENDER,
+        (CURRENT_DATE - E.HIRE_DATE) AS DAYS_OF_SERVICE INTO EMPLOYEE_SERVICE
+    FROM EMPLOYEES E
+    WHERE (E.BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+    ORDER BY E.EMP_NO;
 
 
 (2)	Table with count of total employees and max salary per department and various titles under those departments
